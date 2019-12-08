@@ -10,11 +10,11 @@ echo 'Author: Eduardo Espinoza Perez <eduardo.espinoza@tenpo.cl>'
 echo '----------------------------------------------------------'
 
 echo '[PostgreSQL image configuration] Starting'
-packer build packer-postgresql.json
+packer build -force packer-postgresql.json
 echo '[PostgreSQL image configuration] Finished'
 
 echo '[Docker + TestAPI image configuration] Starting'
-packer build packer-docker.json
+packer build -force packer-docker.json
 echo '[Docker + TestAPI image configuration] Finished'
 
 echo '[Infrastructure creation] Starting'
