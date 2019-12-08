@@ -22,7 +22,7 @@ postgresql_access 'PostgreSQL Server remote access configuration' do
     access_type 'host'
     access_db 'all'
     access_user 'all'
-    access_addr '20.0.0.3/24'
+    access_addr '20.0.0.10/24'
     access_method 'md5'
 end
 

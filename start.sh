@@ -1,9 +1,9 @@
 #!/bin/sh
 
-export TF_VAR_ARM_SUBSCRIPTION_ID=
-export TF_VAR_ARM_CLIENT_ID=
-export TF_VAR_ARM_CLIENT_SECRET=
-export TF_VAR_ARM_TENANT_ID=
+export TF_VAR_arm_subscription_id=
+export TF_VAR_arm_client_id=
+export TF_VAR_arm_client_secret=
+export TF_VAR_arm_tenant_id=
 
 echo '-----------------------DevOps Test------------------------'
 echo 'Author: Eduardo Espinoza Perez <eduardo.espinoza@tenpo.cl>'

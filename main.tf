@@ -66,7 +66,7 @@ resource "azurerm_network_security_group" "docker-api" {
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
-    source_port_range = "8069"
+    source_port_range = "*"
     destination_port_range = "8069"
     source_address_prefix = "*"
     destination_address_prefix = "*"
@@ -74,11 +74,11 @@ resource "azurerm_network_security_group" "docker-api" {
 
   security_rule {
     name = "ssh"
-    priority = 100
+    priority = 150
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
-    source_port_range = "22"
+    source_port_range = "*"
     destination_port_range = "22"
     source_address_prefix = "*"
     destination_address_prefix = "*"
@@ -96,7 +96,7 @@ resource "azurerm_network_security_group" "postgresql" {
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
-    source_port_range = "5432"
+    source_port_range = "*"
     destination_port_range = "5432"
     source_address_prefix = "*"
     destination_address_prefix = "*"
@@ -104,11 +104,11 @@ resource "azurerm_network_security_group" "postgresql" {
 
   security_rule {
     name = "ssh"
-    priority = 100
+    priority = 150
     direction = "Inbound"
     access = "Allow"
     protocol = "Tcp"
-    source_port_range = "22"
+    source_port_range = "*"
     destination_port_range = "22"
     source_address_prefix = "*"
     destination_address_prefix = "*"
@@ -125,8 +125,8 @@ resource "azurerm_network_interface" "docker-api" {
       name = "docker-api-nic-configuration"
       subnet_id = "${azurerm_subnet.default.id}"
       private_ip_address_allocation = "static"
-      private_ip_address = "20.0.0.3"
-      public_ip_address_id = "${azurerm_public_ip.docker-api}"
+      private_ip_address = "20.0.0.10"
+      public_ip_address_id = "${azurerm_public_ip.docker-api.id}"
   }
 }
 
@@ -140,8 +140,8 @@ resource "azurerm_network_interface" "postgresql" {
       name = "postgresql-nic-configuration"
       subnet_id = "${azurerm_subnet.default.id}"
       private_ip_address_allocation = "static"
-      private_ip_address = "20.0.0.2"
-      public_ip_address_id = "${azurerm_public_ip.postgresql}"
+      private_ip_address = "20.0.0.11"
+      public_ip_address_id = "${azurerm_public_ip.postgresql.id}"
   }
 }
 
@@ -154,7 +154,7 @@ resource "azurerm_virtual_machine" "docker-api" {
 
 
   storage_image_reference {
-    id = "${data.azurerm_image.ubuntusrv_docker_api}"
+    id = "${data.azurerm_image.ubuntusrv_docker_api.id}"
   }
 
   storage_os_disk {
@@ -165,14 +165,14 @@ resource "azurerm_virtual_machine" "docker-api" {
 
   os_profile {
     computer_name  = "docker-api-vm"
-    admin_username = "test-user"
+    admin_username = "testuser"
     admin_password = "docker-api-vm-12345"
   }
 
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/user/.ssh/authorized_keys"
+      path = "/home/testuser/.ssh/authorized_keys"
       key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFaq4Kj3gqdsTm5l2mweQj2WY9PBIgaKsC3DDUE8h7EeYvQNxl393oE0l+5VaS1deun2KX79dW2ZUkCwCPzsf4fi8k7EgN2ZIwZ4HM838ResUOPoqmmbRKbaDnR+48aZpMdZ6ZMatvxk/VZYEYsg78Ux56M8wAR/9ZP976dBriLs8Ad2/aPluZHCblgTjV/rEN3sC1Dsn7iBP9VVzKlFLnkyD6hORkdhBtnBRDMIoDrjGfFE+cukVCb+Js9nhZ/c6Rt/YYQuR1Odi93j1aGJr8U0OCKw91sqBIbe9BEOOxw97xaMpWp6oDOwY4oz5EQDy8OLdOgOngXMAn/7JnWgVC9zFarqcWU6YywFrE1FyD3jJpI5LoEZB+qbOeqyqyzc7OpFEEgSfdIwvHntwGwX/tJFI5ZLv9SrKCCdReUnIFPcmgX2MNX0pqq0knDjPWucePx/M8C3vcCAxUyZ/0mVvvzCpW3rOeBtt+lIt2sFk3VQx70CKVFYQYBebEiexqdac="
     }
   }
@@ -186,7 +186,7 @@ resource "azurerm_virtual_machine" "postgresql" {
   network_interface_ids = ["${azurerm_network_interface.postgresql.id}"]
 
   storage_image_reference {
-    id = "${data.azurerm_image.ubuntusrv_postgresql}"
+    id = "${data.azurerm_image.ubuntusrv_postgresql.id}"
   }
 
   storage_os_disk {
@@ -204,7 +204,7 @@ resource "azurerm_virtual_machine" "postgresql" {
   os_profile_linux_config {
     disable_password_authentication = true
     ssh_keys {
-      path = "/home/user/.ssh/authorized_keys"
+      path = "/home/testuser/.ssh/authorized_keys"
       key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFaq4Kj3gqdsTm5l2mweQj2WY9PBIgaKsC3DDUE8h7EeYvQNxl393oE0l+5VaS1deun2KX79dW2ZUkCwCPzsf4fi8k7EgN2ZIwZ4HM838ResUOPoqmmbRKbaDnR+48aZpMdZ6ZMatvxk/VZYEYsg78Ux56M8wAR/9ZP976dBriLs8Ad2/aPluZHCblgTjV/rEN3sC1Dsn7iBP9VVzKlFLnkyD6hORkdhBtnBRDMIoDrjGfFE+cukVCb+Js9nhZ/c6Rt/YYQuR1Odi93j1aGJr8U0OCKw91sqBIbe9BEOOxw97xaMpWp6oDOwY4oz5EQDy8OLdOgOngXMAn/7JnWgVC9zFarqcWU6YywFrE1FyD3jJpI5LoEZB+qbOeqyqyzc7OpFEEgSfdIwvHntwGwX/tJFI5ZLv9SrKCCdReUnIFPcmgX2MNX0pqq0knDjPWucePx/M8C3vcCAxUyZ/0mVvvzCpW3rOeBtt+lIt2sFk3VQx70CKVFYQYBebEiexqdac="
     }    
   }
