@@ -1,0 +1,11 @@
+.gradle/
+nodes/
+azure-credentials
+chef_guid
+chef-client-running.pid
+node.json
+solo.rb
+set_credentials.sh
+.terraform*
+terraform.tfstate
+start-local.sh

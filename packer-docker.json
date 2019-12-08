@@ -1,0 +1,38 @@
+{
+    "variables": {
+        "client_id": "{{env `TF_VAR_ARM_CLIENT_ID`}}",
+        "client_secret": "{{env `TF_VAR_ARM_CLIENT_SECRET`}}",
+        "subscription_id": "{{env `TF_VAR_ARM_SUBSCRIPTION_ID`}}"
+    },
+    "builders": [
+        {
+            "type": "azure-arm",
+            "client_id": "{{user `client_id`}}",
+            "client_secret": "{{user `client_secret`}}",
+            "subscription_id": "{{user `subscription_id`}}",
+            "os_type": "Linux",
+            "image_publisher": "Canonical",
+            "image_offer": "UbuntuServer",
+            "image_sku": "18.04-LTS",
+            "managed_image_resource_group_name": "eespinoza-devopstest-images",
+            "managed_image_name": "ubuntusrv-docker-api-image",
+            "location": "East US",
+            "vm_size": "Standard_B1s"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "chef-solo",
+            "cookbook_paths": ["cookbooks"],
+            "run_list": ["apt", "docker", "api"]
+        },
+        {
+            "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+            "inline": [
+                "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+            ],
+            "inline_shebang": "/bin/sh -x",
+            "type": "shell"
+        }
+    ]
+}
