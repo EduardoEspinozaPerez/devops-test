@@ -1,0 +1,28 @@
+PUT http://40.121.84.184:8069/devops-test/users
+Content-Type: application/json
+
+{
+  "identifier": "eespinoza",
+  "password": "12345"
+}
+
+###
+POST http://40.121.84.184:8069/devops-test/login
+Content-Type: application/json
+
+{
+  "identifier": "eespinoza",
+  "password": "12345"
+}
+
+###
+DELETE http://localhost:8069/devops-test/logout
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI4NmZiNzdmMy1mOTJhLTQ5NWUtYTQ0My1lNGEyZWYxMDk1YTEiLCJzdWIiOiJlZjU5YWEyMy00OGJmLTQyMzEtYjQyYy05MjkzNTZkNGQ2MDciLCJleHAiOjE1NzU2MDU5OTJ9.z4rNT8NryY6x2jg-2X1l-Qi5U36kMrS_agBaam23zJq3-LcoozBQ_JkfhIfXG2Y_jQ_Q-BQe46f67vSFup6GSA
+
+###
+GET http://40.121.84.184:8069/devops-test/sum/36/88
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI2ZmUyMzYyZi1lNTNhLTRiZWYtYjQ3YS01ZTIyYjQ3ODk0NGMiLCJzdWIiOiI3NjU0ZDgxYS05NDZhLTRlZjktYWYyMy1hMTIzOTU5MWQwYzQiLCJleHAiOjE1NzU4NDkwMTJ9.PTl7GI2iWUF3m9x5ghLJzOoeSCiuUS_rkQfEyPEpkEXSiBTVecgndtkVV5DZg0IdBTmscMGd2R4qJYhxV00vkg
+
+###
+GET http://40.121.84.184:8069/devops-test/history
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJqdGkiOiI2ZmUyMzYyZi1lNTNhLTRiZWYtYjQ3YS01ZTIyYjQ3ODk0NGMiLCJzdWIiOiI3NjU0ZDgxYS05NDZhLTRlZjktYWYyMy1hMTIzOTU5MWQwYzQiLCJleHAiOjE1NzU4NDkwMTJ9.PTl7GI2iWUF3m9x5ghLJzOoeSCiuUS_rkQfEyPEpkEXSiBTVecgndtkVV5DZg0IdBTmscMGd2R4qJYhxV00vkg

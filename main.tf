@@ -3,6 +3,7 @@ variable "arm_subscription_id" {}
 variable "arm_client_id" {}
 variable "arm_client_secret" {}
 variable "arm_tenant_id" {}
+variable "ssh_public_key" {}
 
 
 provider "azurerm" {
@@ -91,18 +92,6 @@ resource "azurerm_network_security_group" "postgresql" {
   resource_group_name = "${azurerm_resource_group.default.name}"
 
   security_rule {
-    name = "postgresql"
-    priority = 100
-    direction = "Inbound"
-    access = "Allow"
-    protocol = "Tcp"
-    source_port_range = "*"
-    destination_port_range = "5432"
-    source_address_prefix = "*"
-    destination_address_prefix = "*"
-  }
-
-  security_rule {
     name = "ssh"
     priority = 150
     direction = "Inbound"
@@ -173,7 +162,7 @@ resource "azurerm_virtual_machine" "docker-api" {
     disable_password_authentication = true
     ssh_keys {
       path = "/home/testuser/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFaq4Kj3gqdsTm5l2mweQj2WY9PBIgaKsC3DDUE8h7EeYvQNxl393oE0l+5VaS1deun2KX79dW2ZUkCwCPzsf4fi8k7EgN2ZIwZ4HM838ResUOPoqmmbRKbaDnR+48aZpMdZ6ZMatvxk/VZYEYsg78Ux56M8wAR/9ZP976dBriLs8Ad2/aPluZHCblgTjV/rEN3sC1Dsn7iBP9VVzKlFLnkyD6hORkdhBtnBRDMIoDrjGfFE+cukVCb+Js9nhZ/c6Rt/YYQuR1Odi93j1aGJr8U0OCKw91sqBIbe9BEOOxw97xaMpWp6oDOwY4oz5EQDy8OLdOgOngXMAn/7JnWgVC9zFarqcWU6YywFrE1FyD3jJpI5LoEZB+qbOeqyqyzc7OpFEEgSfdIwvHntwGwX/tJFI5ZLv9SrKCCdReUnIFPcmgX2MNX0pqq0knDjPWucePx/M8C3vcCAxUyZ/0mVvvzCpW3rOeBtt+lIt2sFk3VQx70CKVFYQYBebEiexqdac="
+      key_data = "${var.ssh_public_key}"
     }
   }
 }
@@ -205,7 +194,7 @@ resource "azurerm_virtual_machine" "postgresql" {
     disable_password_authentication = true
     ssh_keys {
       path = "/home/testuser/.ssh/authorized_keys"
-      key_data = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFaq4Kj3gqdsTm5l2mweQj2WY9PBIgaKsC3DDUE8h7EeYvQNxl393oE0l+5VaS1deun2KX79dW2ZUkCwCPzsf4fi8k7EgN2ZIwZ4HM838ResUOPoqmmbRKbaDnR+48aZpMdZ6ZMatvxk/VZYEYsg78Ux56M8wAR/9ZP976dBriLs8Ad2/aPluZHCblgTjV/rEN3sC1Dsn7iBP9VVzKlFLnkyD6hORkdhBtnBRDMIoDrjGfFE+cukVCb+Js9nhZ/c6Rt/YYQuR1Odi93j1aGJr8U0OCKw91sqBIbe9BEOOxw97xaMpWp6oDOwY4oz5EQDy8OLdOgOngXMAn/7JnWgVC9zFarqcWU6YywFrE1FyD3jJpI5LoEZB+qbOeqyqyzc7OpFEEgSfdIwvHntwGwX/tJFI5ZLv9SrKCCdReUnIFPcmgX2MNX0pqq0knDjPWucePx/M8C3vcCAxUyZ/0mVvvzCpW3rOeBtt+lIt2sFk3VQx70CKVFYQYBebEiexqdac="
+      key_data = "${var.ssh_public_key}"
     }    
   }
 }

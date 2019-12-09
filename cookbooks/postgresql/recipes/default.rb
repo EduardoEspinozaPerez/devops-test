@@ -2,6 +2,9 @@ postgresql_server_install 'PostgreSQL Server install' do
     action :install
 end
 
+postgresql_server_conf 'PostgreSQL listen address configuration' do
+end
+
 postgresql_server_install 'PostgreSQL Server configuration' do
     password 'a1b2c3d4e5'
     initdb_locale 'en_US.UTF-8'
